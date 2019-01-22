@@ -1,5 +1,5 @@
-#ch8 탐색 범위 한정 알고리즘
-##8-1 다양한 색상의 상자와 공 ColorfulBoxesAndBalls
+# ch8 탐색 범위 한정 알고리즘
+## 8-1 다양한 색상의 상자와 공 ColorfulBoxesAndBalls
 ```numRed개의 붉은 상자, numBlue개의 파란 상자, numRed개의 붉은 공, numBlue개의 파란 공으로 하는 게임이 있습니다.
 각 상자에는 1개의 공만 넣을 수 있습니다. 상자에는 다음과 같은 점수가 부여됩니다.
 *만약 붉은 상자에 붉은 공이 들어 있으면 onlyRed 점수를 얻습니다.
