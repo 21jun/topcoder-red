@@ -15,7 +15,7 @@ public:
 			for(int j=0;j<width;j++)
 				board[i][j] = -1;
 
-		board[startRow][startCol] = 0;//½ÃÀÛÁ¡Àº 0 ¾ÕÀ¸·Î °¡¸é¼­ +1¾¿ ÇØ¼­ board¿¡ ¼ýÀÚ¸¦ »õ±è
+		board[startRow][startCol] = 0;//ì‹œìž‘ì ì€ 0 ì•žìœ¼ë¡œ ê°€ë©´ì„œ +1ì”© í•´ì„œ boardì— ìˆ«ìžë¥¼ ìƒˆê¹€
 		queue <int> queueX;
 		queue <int> queueY;
 		queueX.push(startCol);
@@ -30,8 +30,8 @@ public:
 				if( 0 <= nextX && nextX < width 
 					&& 0 <= nextY && nextY < height 
 					&& board[nextY][nextX] == -1
-					&& maze[nextY].substr(nextX, 1) == "."){	//°¥ ¼ö ÀÖ´Â °÷ÀÌ°í µé·¶´ø °÷ÀÌ ¾Æ´Ï°í ¹Ì·Î ¾È ¹üÀ§ ³»ÀÌ¸é ±× °÷À¸·Î ÀÌµ¿
-						board[nextY][nextX] = board[y][x] + 1; //+1ÇÑ ¼ýÀÚ ÀÔ·ÂÇÏ±â
+					&& maze[nextY].substr(nextX, 1) == "."){	//ê°ˆ ìˆ˜ ìžˆëŠ” ê³³ì´ê³  ë“¤ë €ë˜ ê³³ì´ ì•„ë‹ˆê³  ë¯¸ë¡œ ì•ˆ ë²”ìœ„ ë‚´ì´ë©´ ê·¸ ê³³ìœ¼ë¡œ ì´ë™
+						board[nextY][nextX] = board[y][x] + 1; //+1í•œ ìˆ«ìž ìž…ë ¥í•˜ê¸°
 						queueX.push(nextX);
 						queueY.push(nextY);
 				}
@@ -43,7 +43,7 @@ public:
 				if(maze[i].substr(j, 1) == "." && board[i][j] == -1){ //??
 					return -1;
 				}
-				max = std::max(max, board[i][j]); // board¿¡ »õ°ÜÁ® ÀÖ´Â ¼ýÀÚ Áß °¡Àå Å« °Í ¹ÝÈ¯
+				max = std::max(max, board[i][j]); // boardì— ìƒˆê²¨ì ¸ ìžˆëŠ” ìˆ«ìž ì¤‘ ê°€ìž¥ í° ê²ƒ ë°˜í™˜
 			}
 		}
 
