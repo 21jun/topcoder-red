@@ -1,0 +1,128 @@
+# 해밀턴 패스
+어떤 국가에는 N개의 도시가 있고, 각 도시에는 0~N-1의 번호가 붙어 있습니다. 
+각 도시끼리는 양방향 도로가 놓여 있습니다.
+존은 다음의 규칙을 따라 국가 내의 노든 도시를 여행하려고 합니다.
+* 1 개의 도시에서 시작해서 N-1개의 도로를 지나 모든 도시의 이동을 마쳐야 합니다.
+* 각 도시는 한 번만 방문해야 합니다.
+* String [] roads가 주어집니다. roads의 i번째 요소에 있는 j번째의 문자가 'Y'라면 존의 도시 i와 j를 연결하는 도로를 반즈시 지나야 합니다.
+
+존이 선택할 수 있는 경로의 수를 1,000,000,007로 나눈 나머지를 리턴하세요.
+
+
+## 힌트
+단순한 탐색으로 풀 수 있는지 판단하기 -> 이 문제의 경우 도시가 50개라면 50!개의 경로를 탐색해야하므로 일반적인 탐색으로는 풀 수 없다.
+
+## 예시
+1. roads = {"NYYY", "YNNN", "YNNN", "YNNN"}	return: 0
+2. roads = {"NYY", "YNY", "YYN"}											return: 0
+3. roads = {"NNNNNY", "NNNNYN", "NNNNYN", "NNNNNN", "NYYNNN", "YNNNNN"}		return: 24
+
+1. 0을 두 번 지난다. 따라서 가능한 경로가 없다.	-> 'Y'가 3개 이상 있다면 0을 리턴
+
+2. 시작점으로 돌아오게 된다. 따라서 가능한 경로가 없다.	-> 순환 경로가 있다()
+
+3.
+* 0-5 or 5-0은 고정 -> 0과 5는 세트
+* 1-4-2 or 2-4-1은 고정 -> 1,2,4는 세트
+* 총 3 그룹으로 나뉜다.
+
+3! * 2 * 2 =  3그룹의 순서 정하기 * (0-5 or 5-0) * (1-4-2 or 2-4-1)
+
+
+## 정리
+* 반드시 거쳐야 하는 경로가 C개(이 문제에서는 2개), 자유롭게 지나갈 수 있는 도시가 I개(이 문제에서는 1개) -> (C+I)!개의 조합이 나온다.
+* 양쪽 끝을 교체한 조합 -> 2C
+
+결론적으로 (C+I)! * 2C가 답이 된다.
+
+## 소스 코드
+
+```cpp
+# include < string >
+# include < vector >
+# define NUM 100000007
+
+using namespace std;
+
+bool visited[50] = {false};	// 모든 도시를 지나지 않음으로 초기화
+
+class HamiltonPath
+{
+public:
+	vector <string> roads;
+
+	int countPaths(vector <string> roads)
+	{
+		int group = 0; int free = 0;		// 반드시 거쳐야 하는 경로(C), 자유롭게 지나갈 수 있는 도시(I)
+		int connect [50] = {0};			// connect는  'Y'의 개수
+
+		long long sum = 1;
+
+		this->roads = roads;
+
+
+		// 'Y'가 3개 이상 있다면 0을 리턴
+		for( int i = 0 ; i < roads.size() ; i ++ )
+		{
+			int y = 0;
+
+			for (int j = 0 ; j < roads[i].size() ; j++ )
+			{
+				if( roads[i].substr(j,1) == "Y")
+				{
+					if( 2 < ++y) return 0;
+				}
+			}
+			connect[i] = y;
+		}
+
+		// 모든 도시를 지나며, free와 group을 계산
+		for( int i = 0 ; i < roads.size() ; i ++ )
+		{
+			if (connect[i] == 0)	// 무조건 지나야 하는 도로가 없을 경우
+			{
+				visited[i] = true;	// 도시를 지나갔다고 표시
+				free++;				// 자유롭게 지나갈 수 있는 도시(I)++
+			}
+			else if(connect[i] == 1 && !visited[i])	// 무조건 지나야 하는 경로가 1개이고, 아직 그 도시를 지나지 않았을 때
+			{
+				group++;	// 반드시 지나야 하는 경로의 수== 세트(C)++
+				dfs(i);
+			}
+		}
+
+		for( int i = 0 ; i < roads.size() ; i ++ )
+		{
+			if( !visited[i])	// 모든 도시를 지나지 못했으면 0을 리턴
+				return 0;
+		}
+
+		for( int i = 0 ; i < group + free ; i ++ )
+		{
+			sum = sum * (i+1);	//(C+I)!
+		}
+
+		sum = sum * 2 * group * NUM;
+		// sum = (C+I)*2*C
+		return (int)sum;
+	}
+
+	void dfs(int city)
+	{
+		visited[city] = true;	// 시작점 지나감
+
+		for( int i = 0; i < roads[city].size() ; i++)
+		{
+			if( roads[city].substr(i,1) == "Y" && !visited[i]) //i번째 도시와 이어지는 도로를 무조건 지나야 하고, 아직 I 도시를 지나지 않았을 때
+				dfs(i);
+		}
+	}
+
+};
+
+```
+
+## 추가
+* substr(j,n) :  잘라낼 문자열의 시작 위치, 문자열의 길이 -> 문자열을 반환하므로 ""을 사용해 비교해야 한다.
+
+
