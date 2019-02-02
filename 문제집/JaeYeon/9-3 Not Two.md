@@ -12,6 +12,8 @@ width-1까지 번호가 붙어 있습니다.
 이 판에 놓을 수 있는 돌의 최대 개수를 리턴해주세요.
 ```
 
+![default](https://user-images.githubusercontent.com/46713032/52165353-20e9dc00-2743-11e9-8624-fd1e98b3c7f3.PNG)
+
 >풀이
 ```
 
